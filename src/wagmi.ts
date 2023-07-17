@@ -1,21 +1,20 @@
-import { configureChains, createConfig } from 'wagmi'
-import { goerli, mainnet } from 'wagmi/chains'
-import { CoinbaseWalletConnector } from 'wagmi/connectors/coinbaseWallet'
-import { InjectedConnector } from 'wagmi/connectors/injected'
-import { MetaMaskConnector } from 'wagmi/connectors/metaMask'
-import { WalletConnectConnector } from 'wagmi/connectors/walletConnect'
+import { configureChains, createConfig } from 'wagmi';
+import { goerli, mainnet } from 'wagmi/chains';
+import { CoinbaseWalletConnector } from 'wagmi/connectors/coinbaseWallet';
+import { InjectedConnector } from 'wagmi/connectors/injected';
+import { MetaMaskConnector } from 'wagmi/connectors/metaMask';
+import { WalletConnectConnector } from 'wagmi/connectors/walletConnect';
 
-import { publicProvider } from 'wagmi/providers/public'
+import { publicProvider } from 'wagmi/providers/public';
 
-const walletConnectProjectId = 'wagmi-tutorial'
+const walletConnectProjectId = 'wagmi-tutorial';
 
-const { chains, publicClient, webSocketPublicClient } = configureChains(
-  [mainnet, ...(process.env.NODE_ENV === 'development' ? [goerli] : [])],
-  [
-    publicProvider(),
-  ],
-)
+const isDevEnv = process.env.NODE_ENV === 'development';
 
+// TODO: Pass an alchemyProvider or infuraProvider to configureChains:
+const { chains, publicClient, webSocketPublicClient } = configureChains([mainnet, ...(isDevEnv ? [goerli] : [])], [publicProvider()]);
+
+/** wagmi config 인스턴스 생성. 위 configureChains에서 destructure한 결과값을 대입: */
 export const config = createConfig({
   autoConnect: true,
   connectors: [
@@ -42,4 +41,4 @@ export const config = createConfig({
   ],
   publicClient,
   webSocketPublicClient,
-})
+});
